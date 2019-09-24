@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 #coding=utf8
 
+from config import database
 from classes.database import Database
-from classes.user_repository import UserRepository
-from classes.post_repository import PostRepository
-from classes.topic_repository import TopicRepository
+from repository.user_repository import UserRepository
+from repository.post_repository import PostRepository
+from repository.topic_repository import TopicRepository
 import requests
 import re
 
@@ -25,7 +26,7 @@ def get_topics():
 
 
 if __name__ == "__main__":
-    db = Database('localhost', 'python3', 'python3', 'python3')
+    db = Database(database['host'], database['user'], database['password'], database['database'])
     users = UserRepository(db)
     topics = TopicRepository(db)
     r_topics = get_topics()
