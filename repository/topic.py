@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 #coding=utf8
 
+from model.topic import Topic
+
 class TopicRepository:
 
     def __init__(self, db):
@@ -11,17 +13,19 @@ class TopicRepository:
                 "WHERE id=%s")
         cursor = self.db.cursor()
         cursor.execute(query, (id))
-        topic = cursor.fetchone()
+        sql_result = cursor.fetchone()
         cursor.close()
+        topic = Topic(sql_result[1], sql_result[2])
+        topic.id = sql_result[0]
         return topic
 
-    def add(self, name, url):
+    def add(self, topic):
         query = ("INSERT INTO topic (name, url)"
                 "VALUES (%s, %s)")
         cursor = self.db.cursor()
-        print("Adding: {name}".format(name=name))
-        cursor.execute(query, (name, url))
+        cursor.execute(query, (topic.name, topic.url))
         cursor.close()
+        self.db.commit()
         
 
     # WIP
@@ -34,7 +38,17 @@ class TopicRepository:
         cursor.close()
         return topics
 
-
+    def get_by_url(self, url):
+        # TODO: Find another way - maybe escape seperately
+        query = ("SELECT id, name, url FROM topic  WHERE url='"
+                + url + "' LIMIT 1")
+        cursor = self.db.cursor()
+        cursor.execute(query, (url))
+        sql_result = cursor.fetchone()
+        cursor.close
+        topic = Topic(sql_result[1], sql_result[2])
+        topic.id = sql_result[0]
+        return topic
 
 
     # Buggy
