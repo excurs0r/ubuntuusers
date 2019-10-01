@@ -15,5 +15,8 @@ class Database:
     def cursor(self):
         return self.connection.cursor()
 
-    def refresh(self):
-        self.connection.cmd_refresh(RefreshOption.TABLES)
+    def close(self):
+        self.connection.close()
+    
+    def commit(self):
+        self.connection.commit()
