@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 #coding=utf8
 
-from model import Model
+from .model import Model
 from hashlib import sha256
 
 class Post(Model):
 
-    def __init__(self, publish_date, length, user, topic, thread, content):
+    def __init__(self, publish_date, length, user, topic, thread):
         super().__init__()
         self._publish_date = publish_date
         self._length = length
@@ -61,5 +61,9 @@ class Post(Model):
     def hash(self):
         return self._hash
 
-    def update_hash(self, content):
+    @hash.setter
+    def hash(self, hash):
+        self._hash = hash
+
+    def calculete_hash(self, content):
         self._hash = sha256(content).hexdigest()
