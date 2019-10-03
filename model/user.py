@@ -1,7 +1,8 @@
 #!/usr/bin/python3
-#coding=utf8
+# coding=utf8
 
-from model import Model
+from .model import Model
+
 
 class User(Model):
     

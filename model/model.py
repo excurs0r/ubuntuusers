@@ -1,5 +1,6 @@
-#!/usr/bin/python3
-#coding=utf8
+#!/usr/bin/env python3
+# coding=utf8
+
 
 class Model:
 
@@ -11,5 +12,5 @@ class Model:
         return self._id
 
     @id.setter
-    def id(self, id):
-        self._id = id
+    def id(self, _id):
+        self._id = _id
