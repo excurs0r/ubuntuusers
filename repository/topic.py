@@ -28,15 +28,21 @@ class TopicRepository:
         self.db.commit()
         
 
-    # WIP
     def get_topics(self, page=1, items=20):
-        query = ("SELECT id, name, url FROM"
+        query = ("SELECT id, name, url FROM "
                 "topic LIMIT %s OFFSET %s;")
         cursor = self.db.cursor()
         cursor.execute(query, (items, items*(page-1)))
         topics = cursor.fetchall()
         cursor.close()
-        return topics
+        if len(topics) == 0:
+            return False
+        topic_models = []
+        for t in topics:
+            model = Topic(t[1], t[2])
+            model.id = t[0]
+            topic_models.append(model)
+        return topic_models
 
     def get_by_url(self, url):
         # TODO: Find another way - maybe escape seperately
@@ -49,7 +55,6 @@ class TopicRepository:
         topic = Topic(sql_result[1], sql_result[2])
         topic.id = sql_result[0]
         return topic
-
 
     # Buggy
     def exist(self, url):
