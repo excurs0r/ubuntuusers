@@ -5,7 +5,7 @@ from model.post import Post
 
 class PostRepository:
 
-    def __init(selfi, db):
+    def __init__(self, db):
         self.db = db
 
     def get(self, id):
