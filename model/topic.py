@@ -8,6 +8,7 @@ class Topic(Model):
 
     def __init__(self, name, url):
         super().__init__()
+        self._id = 0;
         self._name = name
         self._url = url
 
@@ -26,3 +27,11 @@ class Topic(Model):
     @url.setter
     def url(self, url):
         self._url = url
+
+    @property
+    def id(self):
+        return self._id
+
+    @id.setter
+    def id(self, id):
+        self._id = id
