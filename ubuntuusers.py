@@ -15,21 +15,17 @@ import re
 db = Database(database['host'], database['user'], database['password'], database['database'])
 
 def get_topics():
-    try:
-        topics = TopicRepository(db)
-        r = requests.get("https://forum.ubuntuusers.de/")
-        content = r.content.decode('utf8')
-        reg = "<tr\\sclass=\"entry.+?<a.{0,100}href=\"(.{0,100}?)\".+?>(.+?)<"
-        topic_ex = re.compile(reg, re.MULTILINE | re.DOTALL)
-        matches = topic_ex.finditer(content)
-        for m in matches:
-            topic = Topic(m.group(2), m.group(1))
-            topics.add(topic)
-            print("Added Topic: {topic}".format(topic=topic.name))
-        return
-    except Exception as e:
-        print("Request failed:")
-        exit(1)
+    topics = TopicRepository(db)
+    r = requests.get("https://forum.ubuntuusers.de/")
+    content = r.content.decode('utf8')
+    reg = "<tr\\sclass=\"entry.+?<a.{0,100}href=\"(.{0,100}?)\".+?>(.+?)<"
+    topic_ex = re.compile(reg, re.MULTILINE | re.DOTALL)
+    matches = topic_ex.finditer(content)
+    for m in matches:
+        topic = Topic(m.group(2), m.group(1))
+        topics.add(topic)
+        print("Added Topic: {topic}".format(topic=topic.name))
+    return
 
 def get_threads(url, topic):
     repository = ThreadRepository(db)
@@ -40,7 +36,7 @@ def get_threads(url, topic):
     matches = thread_ex.finditer(content)
     for m in matches:
         thread = Thread(m.group(2), m.group(1), topic.id)
-#        print("Thread: {thread}".format(thread=thread.name))
+        print("Thread: {thread}".format(thread=thread.name))
         repository.add(thread)
     reg = "<div\\sclass=\"pagination(.+?)<\\/div>"
     pagex = re.compile(reg, re.DOTALL)
@@ -64,7 +60,6 @@ if __name__ == "__main__":
     items=50
     _topics = topics.get_topics(page, items)
     while (_topics != False):
-        print(len(_topics))
         for t in _topics:
             url = get_threads(t.url, t)
             prev_url = ""
