@@ -2,7 +2,7 @@
 # coding=utf8
 
 import mysql.connector
-
+from config import database
 
 class Database:
 
@@ -17,3 +17,5 @@ class Database:
 
     def commit(self):
         self.connection.commit()
+
+db = Database(database['host'], database['user'], database['password'], database['database'])

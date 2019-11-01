@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # coding=utf8
 
-from config import database
-from classes.database import Database
+from database import db
 from repository.topic import TopicRepository
 from repository.thread import ThreadRepository
 from repository.user import UserRepository
@@ -12,7 +11,6 @@ from model.thread import Thread
 import requests
 import re
 
-db = Database(database['host'], database['user'], database['password'], database['database'])
 
 def get_topics():
     topics = TopicRepository(db)
