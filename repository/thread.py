@@ -26,4 +26,19 @@ class ThreadRepository:
         cursor.execute(query, (thread.name, thread.url, thread.topic))
         cursor.close()
         self.db.commit()
-        
+       
+    def get_paginated(self, page=1, items=20):
+        query = ("SELECT id, name, url, topic FROM "
+                 "thread LIMIT %s OFFSET %s;")
+        cursor = self.db.cursor()
+        cursor.execute(query, (items, items*(page-1)))
+        threads = cursor.fetchall()
+        cursor.close()
+        if len(threads) == 0:
+            return False
+        thread_models = []
+        for t in threads:
+            thread = Thread(t[1], t[2], t[3])
+            thread.id = t[0]
+            thread_models.append(thread)
+        return thread_models
