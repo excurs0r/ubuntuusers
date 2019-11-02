@@ -28,7 +28,7 @@ class TopicRepository:
         self.db.commit()
         
 
-    def get_topics(self, page=1, items=20):
+    def get_paginated(self, page=1, items=20):
         query = ("SELECT id, name, url FROM "
                 "topic LIMIT %s OFFSET %s;")
         cursor = self.db.cursor()
@@ -44,27 +44,3 @@ class TopicRepository:
             topic_models.append(model)
         return topic_models
 
-    def get_by_url(self, url):
-        # TODO: Find another way - maybe escape seperately
-        query = ("SELECT id, name, url FROM topic  WHERE url='"
-                + url + "' LIMIT 1")
-        cursor = self.db.cursor()
-        cursor.execute(query, (url))
-        sql_result = cursor.fetchone()
-        cursor.close
-        topic = Topic(sql_result[1], sql_result[2])
-        topic.id = sql_result[0]
-        return topic
-
-    # Buggy
-    def exist(self, url):
-        query = ("SELECT id FROM topic"
-                "WHERE url='%s'")
-        cursor = self.db.cursor()
-        cursor.execute(query, (url))
-        r = cursor.fetchmany()
-        cursor.close()
-        if len(r) > 0:
-            return True
-        return False
-        
