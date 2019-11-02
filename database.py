@@ -18,4 +18,14 @@ class Database:
     def commit(self):
         self.connection.commit()
 
+    def truncate(self):
+        cursor = self.cursor()
+        cursor.execute('SET FOREIGN_KEY_CHECKS=0')
+        cursor.execute('truncate table topic')
+        cursor.execute('truncate table thread')
+        cursor.execute('truncate table post')
+        cursor.execute('truncate table user')
+        cursor.execute('SET FOREIGN_KEY_CHECKS=1')
+        self.commit()
+
 db = Database(database['host'], database['user'], database['password'], database['database'])
